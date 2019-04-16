@@ -5,7 +5,7 @@ import { rgba } from 'polished';
 import MaskedInput from 'react-text-mask'
 import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe'
 import validate from 'card-validator'
-import { Fieldset, Clear, Feedback, ErrorMessage, Input, Label } from '../'
+import { Fieldset, Clear, Feedback, ErrorMessage, Input, Label } from './'
 
 // validate.creditCardType.addCard({
 //   niceType: 'Mir',
@@ -23,6 +23,8 @@ import { Fieldset, Clear, Feedback, ErrorMessage, Input, Label } from '../'
 // validate.creditCardType.changeOrder('mir', 0)
 
 const { creditCardType } = validate
+
+export const validator = validate
 
 // const Visa
 
@@ -342,7 +344,7 @@ const windowOpened = () => {
   )
 }
 
-class ThreedSecure extends React.Component {
+export class ThreedSecure extends React.Component {
   constructor(props) {
     super(props)
 
@@ -484,8 +486,6 @@ const CreditCard = ({
   </React.Fragment>
 )
 
-export {
-  CreditCard as default,
-  ThreedSecure,
-  validate
-}
+export default CreditCard
+// export ThreedSecure as ThreedSecure
+// export validate

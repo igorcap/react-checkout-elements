@@ -14,7 +14,7 @@ const styles = {
 const CenterDecorator = storyFn => <div style={styles}>{storyFn()}</div>;
 addDecorator(CenterDecorator)
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
   const submit = (values, done, threedSecure) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -26,9 +26,12 @@ const CheckoutForm = () => {
   }
   
   return (
-    <Checkout submitText="Submit"
-  initialValues={{ first_name: 'John', last_name: 'Doe', email: 'john@doe.com', phone: '+79621112233', card: { number: '4242424242424242', expiry: '04 / 23', cvv: '123' } }}
-  onSubmit={submit} />
+    <Checkout
+      {...props}
+      submitText="Submit"
+      initialValues={{ first_name: 'John', last_name: 'Doe', email: 'john@doe.com', phone: '+79621112233', card: { number: '4242424242424242', expiry: '04 / 23', cvv: '123' } }}
+  onSubmit={submit}>
+    </Checkout>
   )
 }
 
@@ -62,5 +65,5 @@ storiesOf('Checkout', module)
       </Forms>
   ))
   .add('With submit request', () => (
-    <CheckoutForm />
+    <CheckoutForm submitFullWidth />
   ))

@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Formik, connect } from 'formik'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
-import CreditCard, { ThreedSecure, validate } from './credit-card'
+import CreditCard, { ThreedSecure, validator as validate } from './credit-card'
 import Customer from './customer'
 
 const RowStyles = `
 `
-const Row = styled.div`
+export const Row = styled.div`
 width: 100%;
 position: relative;
 margin-bottom: 10px;
@@ -67,7 +67,7 @@ font-weight: 700;
 text-transform: uppercase;
 `
 
-const Fieldset = ({ children, title }) => (
+export const Fieldset = ({ children, title }) => (
   <FieldsetElement>
     {title &&
       <FieldsetTitle>{title}</FieldsetTitle>
@@ -96,11 +96,11 @@ const labelStyles = `
   font-family: Helvetica,Arial,sans-serif;
 `
 
-const Label = styled.label`
+export const Label = styled.label`
   ${labelStyles}
 `
 
-const ErrorMessage = styled.div`
+export const ErrorMessage = styled.div`
   ${labelStyles}
   transform-origin: bottom right;
   right: 8px;
@@ -144,7 +144,7 @@ const Submit = styled.button.attrs(() => ({
   `}
 `
 
-const Input = styled.input.attrs(({ showPlaceholder = true }) => ({
+export const Input = styled.input.attrs(({ showPlaceholder = true }) => ({
   showPlaceholder: showPlaceholder
 }))`
 padding: 12px 14px;  
@@ -285,7 +285,7 @@ const formatError = fields => Object.keys(fields).map(field => {
 	}
       })
 
-const Errors = ({ list = null }) => {
+export const Errors = ({ list = null }) => {
   const fields = Object.keys(list)
 
   if (fields.length < 1) {
@@ -308,7 +308,7 @@ const Errors = ({ list = null }) => {
   )
 }
 
-const Forms = ({ children, submitText, submitting = false, ...props }) => {
+export const Forms = ({ children, submitText, submitFullWidth, submitting = false, ...props }) => {
   return (
   <Formik {...props}>
     {({ handleSubmit, handleReset, isValid, isSubmitting, errors }) => {
@@ -323,7 +323,7 @@ const Forms = ({ children, submitText, submitting = false, ...props }) => {
 	    */}
 	</FormElements>
 	<Errors list={errors} />
-	<Submit disabled={!isValid || isSubmitting} loading={submitting}>
+	<Submit full={submitFullWidth} disabled={!isValid || isSubmitting} loading={submitting}>
 	  {submitting ? 'Submitting...' : submitText}
 	</Submit>
       </Form>
@@ -358,7 +358,7 @@ const FeedbackMessage = styled.span`
   right: 0;
 `
 
-const Feedback = ({ children, ...props }) => (
+export const Feedback = ({ children, ...props }) => (
   <FeedbackElement>
     <svg x="0px" y="0px" viewBox="0 0 65 65">
       <g>
@@ -399,7 +399,7 @@ svg {
 }
 `
 
-const Clear = props => (
+export const Clear = props => (
   <ClearElement {...props}>
     <svg width="64" height="64" viewBox="0 0 64 64">
       <g>
@@ -473,23 +473,13 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
 	    // formik.handleReset()
 	  }} />
       }
+      {children &&
+	<Fieldset>{children}</Fieldset>
+      }
     </Forms>
   )
 }
 
 const ConnectedCheckout = connect(Checkout)
 
-export {
-  Checkout as default,
-  Forms,
-  Row,
-  Input,
-  Label,
-  ErrorMessage,
-  Feedback,
-  Submit,
-  Fieldset,
-  Clear,
-  CreditCard,
-  Customer
-}
+export default Checkout

@@ -1,34 +1,42 @@
 {
   "name": "react-checkout-elements",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "Checkout elements for React",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/andreystepanov/react-checkout-elements",
   "author": "Andrey Stepanov",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -s ./3ds-server",
-    "build": "./node_modules/.bin/babel --ignore *.stories.js ./src --out-dir ./dist"
+    "prepublish": "npm run build",
+    "build": "./node_modules/.bin/babel --ignore **/*.stories.js ./src --out-dir ./dist"
   },
   "dependencies": {
     "card-validator": "^6.1.0",
     "credit-card-type": "^8.1.0",
     "formik": "^1.5.1",
     "polished": "^3.1.0",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
     "react-text-mask": "^5.4.3",
     "styled-components": "^4.2.0",
     "text-mask-addons": "^3.8.0",
     "validator": "^10.11.0"
   },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
   "devDependencies": {
+    "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "@storybook/addon-actions": "^5.0.8",
     "@storybook/addon-console": "^1.1.0",
     "@storybook/react": "^5.0.8",
     "babel-loader": "^8.0.5",
+    "babel-plugin-styled-components": "^1.10.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",

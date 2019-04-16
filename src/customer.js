@@ -3,7 +3,7 @@ import { Field } from 'formik'
 import isEmail from 'validator/lib/isEmail'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmpty from 'validator/lib/isEmpty'
-import { Fieldset, Row, ErrorMessage, Input, Label } from '../'
+import { Fieldset, Row, ErrorMessage, Input, Label } from './'
 // import styled, { css } from 'styled-components'
 
 const validateEmail = (value = '') => {
@@ -77,19 +77,19 @@ const FormInput = ({ inline, label, placeholder, ...props }) => (
 )
 
 
-const FirstName = props => (
+export const FirstName = props => (
   <FormInput label="Имя" placeholder="Иван" name="first_name" validate={validateFirstName} {...props} />
 )
 
-const LastName = props => (
+export const LastName = props => (
   <FormInput label="Фамилия" placeholder="Петров" name="last_name" validate={validateLastName} {...props} />
 )
 
-const Email = (props) => (
+export const Email = (props) => (
   <FormInput label="Эл. почта" placeholder="email@example.com" name="email" validate={validateEmail} {...props} />
 )
 
-const Phone = (props) => (
+export const Phone = (props) => (
   <FormInput label="Телефон" placeholder="+79823332211" name="phone" validate={validatePhone} {...props} />
 )
 
@@ -102,10 +102,4 @@ const Customer = ({ title = 'Контактная информация' }) => (
   </Fieldset>
 )
 
-export {
-  Customer as default,
-  Email,
-  Phone,
-  FirstName,
-  LastName
-}
+export default Customer

@@ -1,0 +1,34 @@
+{
+  "name": "react-checkout",
+  "version": "1.0.0",
+  "description": "Checkout elements for React",
+  "main": "dist/index.js",
+  "repository": "https://github.com/andreystepanov/react-checkout",
+  "author": "Andrey Stepanov",
+  "license": "MIT",
+  "scripts": {
+    "storybook": "start-storybook -s ./3ds-server"
+  },
+  "dependencies": {
+    "card-validator": "^6.1.0",
+    "credit-card-type": "^8.1.0",
+    "formik": "^1.5.1",
+    "polished": "^3.1.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "react-text-mask": "^5.4.3",
+    "styled-components": "^4.2.0",
+    "text-mask-addons": "^3.8.0",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@storybook/addon-actions": "^5.0.5",
+    "@storybook/addon-console": "^1.1.0",
+    "@storybook/react": "^5.0.5",
+    "babel-loader": "^8.0.5",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4"
+  }
+}

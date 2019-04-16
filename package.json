@@ -1,9 +1,9 @@
 {
-  "name": "react-checkout",
-  "version": "1.0.0",
+  "name": "react-checkout-elements",
+  "version": "1.0.1",
   "description": "Checkout elements for React",
-  "main": "dist/index.js",
-  "repository": "https://github.com/andreystepanov/react-checkout",
+  "main": "src/index.js",
+  "repository": "https://github.com/andreystepanov/react-checkout-elements",
   "author": "Andrey Stepanov",
   "license": "MIT",
   "scripts": {

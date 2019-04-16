@@ -462,7 +462,7 @@ const Loader = () => (
 )
 
 const CreditCard = ({
-  title = 'Payment information', 
+  title = 'Платежная информация', 
   submitting = false, 
   onThreedSecureComplete,
   threedSecureUrl, 

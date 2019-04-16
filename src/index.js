@@ -432,7 +432,7 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
 
     setSubmitting(true)
 
-    console.log(actions)
+    // console.log(actions)
 
     const formData = {
       ...values,
@@ -440,9 +440,9 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
     }
     const result = onSubmit(formData, setSubmitting, setThreedSecureUrl)
 
-    setTimeout(() => {
-      actions.resetForm()
-    }, 1000)
+    // setTimeout(() => {
+    //   actions.resetForm()
+    // }, 1000)
 
     // if (result instanceof Promise) {
     // Promise.resolve(result).then(() => setSubmitting(false))
@@ -453,7 +453,7 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
     return null
   }
 
-  console.log(formik)
+  // console.log(formik)
 
   return (
     <Forms 
@@ -470,7 +470,7 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
 	  onThreedSecureComplete={() => {
 	    setThreedSecureUrl(false) 
 	    setSubmitting(false)
-	    formik.handleReset()
+	    // formik.handleReset()
 	  }} />
       }
     </Forms>
@@ -480,7 +480,7 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
 const ConnectedCheckout = connect(Checkout)
 
 export {
-  ConnectedCheckout as default,
+  Checkout as default,
   Forms,
   Row,
   Input,
@@ -489,5 +489,7 @@ export {
   Feedback,
   Submit,
   Fieldset,
-  Clear
+  Clear,
+  CreditCard,
+  Customer
 }

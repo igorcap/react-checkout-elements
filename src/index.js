@@ -90,6 +90,7 @@ const labelStyles = `
   width: auto;
   z-index: 1;
   font-size: 16px;
+  line-height: 1;
   pointer-events: none;
   position: absolute;
   transform-origin: bottom left;
@@ -409,19 +410,29 @@ export const Clear = props => (
   </ClearElement>
 )
 
-const formatCard = ({ expiry, ...card }) => {
+const formatCard = ({ expiry, number, cvv }) => {
   const { month, year } = validate.expirationDate(expiry) 
    
   return {
-    ...card,
+    number: number.replace(/\s+/g, ''),
     expiry: {
       month,
       year
-    }
+    },
+    cvv
   }
 }
  
-const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ...props }) => {
+const Checkout = ({
+  card = true,
+  threedSecureCallbackName, 
+  customer = true, 
+  initialValues = null, 
+  onSubmit, 
+  children, 
+  formik, 
+  ...props
+}) => {
   const [submitting, setSubmitting] = useState(false)
   const [threedSecureUrl, setThreedSecureUrl] = useState(null)
 
@@ -453,11 +464,25 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
     return null
   }
 
+  const values = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    card: {
+      number: '',
+      expiry: '',
+      cvv: ''
+    },
+    ...initialValues
+  }
+
   // console.log(formik)
 
   return (
     <Forms 
       {...props}
+      initialValues={values}
       onSubmit={submit}
       submitting={submitting}>
       {customer &&
@@ -465,6 +490,7 @@ const Checkout = ({ card = true, customer = true, onSubmit, children, formik, ..
       }
       {card &&
 	<CreditCard
+	  threedSecureCallbackName={threedSecureCallbackName}
 	  threedSecure={!!threedSecureUrl}
 	  threedSecureUrl={threedSecureUrl}
 	  onThreedSecureComplete={() => {

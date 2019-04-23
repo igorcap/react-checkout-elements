@@ -466,6 +466,7 @@ const Loader = () => (
 const CreditCard = ({
   title = 'Платежная информация', 
   submitting = false, 
+  threedSecureCallbackName,
   onThreedSecureComplete,
   threedSecureUrl, 
   threedSecure = false }) => (
@@ -480,6 +481,7 @@ const CreditCard = ({
 
     {threedSecure &&
       <ThreedSecure
+        callbackName={threedSecureCallbackName}
         onComplete={onThreedSecureComplete}    
         url={threedSecureUrl} />  
     }

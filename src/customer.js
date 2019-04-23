@@ -20,8 +20,6 @@ const validateEmail = (value = '') => {
 const validatePhone = (value = '') => {
   let errorMessage
 
-  console.log(value, ' : ', isMobilePhone(value))
-
   if (isEmpty(value, { ignore_whitespace: true })) {
     errorMessage = 'Укажите телефон'
   } else if (!isMobilePhone(value)) {
@@ -33,9 +31,13 @@ const validatePhone = (value = '') => {
 
 const validateName = (firstName = true) => (value = '') => {
   let errorMessage
+  const nameType = firstName ? 'имя' : 'фамилию'
+  const maxLength = 32
 
   if (isEmpty(value, { ignore_whitespace: true })) {
-   errorMessage = `Укажите ${firstName ? 'имя' : 'фамилию'}`;
+   errorMessage = `Укажите ${nameType}`;
+  } else if (value.length > maxLength) {
+    errorMessage = `${nameType.charAt(0).toUpperCase() + nameType.slice(1)} не должно привышать ${maxLength} символа`
   }
 
   return errorMessage

@@ -494,7 +494,7 @@ const Checkout = ({
   const [submitting, setSubmitting] = useState(false)
   const [threedSecureUrl, setThreedSecureUrl] = useState(null)
 
-  const submit  = (values, actions) => {
+  const submit  = async (values, actions) => {
     if (typeof onSubmit !== 'function') {
       return false
     }
@@ -507,8 +507,10 @@ const Checkout = ({
       ...values,
       card: formatCard(values.card)
     }
-    const result = onSubmit(formData, setSubmitting, setThreedSecureUrl)
+    
+    const result = await onSubmit(formData, setSubmitting, setThreedSecureUrl)
 
+    return result
     // setTimeout(() => {
     //   actions.resetForm()
     // }, 1000)

@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
 import { Formik, connect } from 'formik'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { rgba } from 'polished'
 import CreditCard, { ThreedSecure, validator as validate } from './credit-card'
 import Customer from './customer'
+
+const loading = keyframes`
+  from {
+    transform: translateX(0);
+  }
+  to { 
+    transform: translateX(46px);
+  }
+`
 
 const RowStyles = `
 `
@@ -134,15 +143,41 @@ const Submit = styled.button.attrs(() => ({
   cursor: pointer;
   letter-spacing: 1px;
   padding: 0 20px;
+  overflow: hidden;
+  position: relative;
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
 
+span {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: -46px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  background: repeating-linear-gradient( -55deg, #ffffff 1px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 11px, #ffffff 12px, #ffffff 20px );
+  animation-name: ${loading};
+  animation-duration: .6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transition: opacity .2s;
+}
+
   ${props => props.loading && css`
     cursor: wait !important;
+    // color: transparent;
+
+span {
+  opacity: 0.2;
+  visibility: visible;
+}
   `}
+
 `
 
 export const Input = styled.input.attrs(({ showPlaceholder = true }) => ({
@@ -218,9 +253,11 @@ const Form = styled.form`
 const FormElements = styled.div`
   position: relative;
   margin: 0 0 30px;
+  overflow: hidden;
 `
 
 const Blurred = styled.div`
+overflow: hidden;
 
 ${FieldsetElement} {
   transition: all .2s;
@@ -232,6 +269,24 @@ ${props => props.active && css`
     // filter: blur(2px);
     pointer-events: none;
   }
+
+    &:after {
+      display: none;
+      content: '';
+      // width: 100%;
+      // height: 100%;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: -46px;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient( -55deg, rgba(236, 241, 245, 1) 1px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 11px, rgba(236, 241, 245, 1) 12px, rgba(236, 241, 245, 1) 20px );
+      animation-name: ${loading};
+	animation-duration: .6s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+    }
 `}
 `
 
@@ -309,7 +364,7 @@ export const Errors = ({ list = null }) => {
   )
 }
 
-export const Forms = ({ children, submitText, submitFullWidth, submitting = false, ...props }) => {
+export const Forms = ({ children, submitText, submittingText = 'Submitting', submitFullWidth, submitting = false, ...props }) => {
   return (
   <Formik {...props}>
     {({ handleSubmit, handleReset, isValid, isSubmitting, errors }) => {
@@ -325,7 +380,8 @@ export const Forms = ({ children, submitText, submitFullWidth, submitting = fals
 	</FormElements>
 	<Errors list={errors} />
 	<Submit full={submitFullWidth} disabled={!isValid || isSubmitting} loading={submitting}>
-	  {submitting ? 'Submitting...' : submitText}
+	  {submitting ? `${submittingText}...` : submitText}
+	  <span></span>
 	</Submit>
       </Form>
       )
@@ -425,7 +481,9 @@ const formatCard = ({ expiry, number, cvv }) => {
  
 const Checkout = ({
   card = true,
+  threedSecureDomain,
   threedSecureCallbackName, 
+  onThreedSecureComplete,
   customer = true, 
   initialValues = null, 
   onSubmit, 
@@ -490,13 +548,19 @@ const Checkout = ({
       }
       {card &&
 	<CreditCard
+	  threedSecureDomain={threedSecureDomain}
 	  threedSecureCallbackName={threedSecureCallbackName}
 	  threedSecure={!!threedSecureUrl}
 	  threedSecureUrl={threedSecureUrl}
-	  onThreedSecureComplete={() => {
+	  onThreedSecureComplete={(...args) => {
 	    setThreedSecureUrl(false) 
-	    setSubmitting(false)
 	    // formik.handleReset()
+
+	    if (typeof onThreedSecureComplete === 'function') {
+	      onThreedSecureComplete(...args, () => setSubmitting(false))
+	    } else {
+	      setSubmitting(false)
+	    }
 	  }} />
       }
       {children &&

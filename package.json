@@ -1,13 +1,13 @@
 {
   "name": "react-checkout-elements",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "Checkout elements for React",
   "main": "dist/index.js",
   "repository": "https://github.com/andreystepanov/react-checkout-elements",
   "author": "Andrey Stepanov",
   "license": "MIT",
   "scripts": {
-    "storybook": "start-storybook -s ./3ds-server",
+    "storybook": "start-storybook -p 58136 -s ./3ds-server",
     "prepublish": "npm run build",
     "build": "./node_modules/.bin/babel --ignore **/*.stories.js ./src --out-dir ./dist"
   },

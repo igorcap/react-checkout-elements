@@ -23,13 +23,13 @@
 <script type="text/javascript">
   var charge = {};
 
-    if (window.opener) {
-        if (window.opener.completeThreedSecure) {
-            window.opener.completeThreedSecure(charge);
-        }
-
-        window.close();
-    }
+  try {
+      window.opener.requite3dsCompleted(charge);
+      window.close();
+  } catch (e) {
+      console.log(e)
+      window.opener.postMessage(charge, '*');
+  }
 </script>
 <body>
   <h3>Server is running</h3>

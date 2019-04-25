@@ -355,27 +355,36 @@ export class ThreedSecure extends React.Component {
   componentDidMount() {
     if (window && window.addEventListener) {
         window.addEventListener('beforeunload', closeWindow)
+        window.addEventListener('message', this.onComplete, false)
     }
 
-    window[this.callbackName] = this.onComplete
+    // window[this.callbackName] = this.onComplete
 
     this.focus()
   }
 
   componentWillUnmount() {
     closeWindow()
-    window.removeEventListener('beforeunload', closeWindow);
+    window.removeEventListener('beforeunload', closeWindow)
+    window.removeEventListener('message', this.onComplete, false)
 
-    window[this.callbackName] = undefined
+    // window[this.callbackName] = undefined
   }
 
-  onComplete(...args) {
-    const { onComplete } = this.props
+  onComplete({ origin, data }) {
+    const { onComplete, domain } = this.props
+
+    console.log(origin)
+    console.log(data)
+
+    if (domain && origin.indexOf(domain) !== 0) {
+      return 
+    }
 
     closeWindow()
 
     if (typeof onComplete === 'function') {
-      onComplete(...args)
+      onComplete(data)
     }
   }
 
@@ -466,6 +475,7 @@ const Loader = () => (
 const CreditCard = ({
   title = 'Платежная информация', 
   submitting = false, 
+  threedSecureDomain,
   threedSecureCallbackName,
   onThreedSecureComplete,
   threedSecureUrl, 
@@ -481,6 +491,7 @@ const CreditCard = ({
 
     {threedSecure &&
       <ThreedSecure
+        domain={threedSecureDomain}
         callbackName={threedSecureCallbackName}
         onComplete={onThreedSecureComplete}    
         url={threedSecureUrl} />  

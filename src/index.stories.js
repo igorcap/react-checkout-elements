@@ -17,11 +17,11 @@ addDecorator(CenterDecorator)
 const CheckoutForm = (props) => {
   const submit = (values, done, threedSecure) => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-	console.log(values)
-	threedSecure('http://localhost:58136/index.html')
+      // setTimeout(() => {
+	// console.log(values)
+	threedSecure('https://secure.payu.ru/order/3ds/return/tid/2Xrl83KEneyC1XG3d7-9eg/refno/62820787/attempt/2Xrl85iEoeuO6HXrfr_KZXKD3YLdl7Ft/sign/d354287866910dd4fd11aadd9707db20/')
 	resolve()
-      }, 2000)
+      // }, 2000)
     })
   }
   

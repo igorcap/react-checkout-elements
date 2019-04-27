@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Formik, connect } from 'formik'
 import styled, { css, keyframes } from 'styled-components'
 import { rgba } from 'polished'
 import CreditCard, { ThreedSecure, validator as validate } from './credit-card'
 import Customer from './customer'
+import { Visa, MasterCard, Mir } from './card-icons'
 
 const loading = keyframes`
   from {
@@ -74,12 +75,38 @@ font-size: 12px;
     letter-spacing: 1.1px;
 font-weight: 700;
 text-transform: uppercase;
+position: relative;
+
+&:after {
+  content: '';
+  clear: both;
+  display: table;
+}
 `
 
-export const Fieldset = ({ children, title }) => (
+const Cards = styled.div`
+  position: absolute;
+  right: 0;
+  top: calc(50% - (32px / 2));
+  
+svg {
+  margin: 0 0 0 5px;
+}
+`
+
+export const Fieldset = ({ card = false, children, title }) => (
   <FieldsetElement>
     {title &&
-      <FieldsetTitle>{title}</FieldsetTitle>
+      <FieldsetTitle>
+	{title}
+	{card &&
+	  <Cards>
+	    <Mir color />
+	    <Visa color />
+	    <MasterCard color />
+	  </Cards>
+	}
+      </FieldsetTitle>
     }
 
     <Rows>
@@ -124,6 +151,23 @@ export const ErrorMessage = styled.div`
   bottom: -5px;
 `
 
+const LoadingOverlay = styled.span`
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: -46px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  background: repeating-linear-gradient( -55deg, #ffffff 1px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 11px, #ffffff 12px, #ffffff 20px );
+  animation-name: ${loading};
+  animation-duration: .6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transition: opacity .2s;
+`
+
 const Submit = styled.button.attrs(() => ({
   type: 'submit',
 }))`
@@ -151,28 +195,11 @@ const Submit = styled.button.attrs(() => ({
     cursor: not-allowed;
   }
 
-span {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  left: -46px;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: inherit;
-  background: repeating-linear-gradient( -55deg, #ffffff 1px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 11px, #ffffff 12px, #ffffff 20px );
-  animation-name: ${loading};
-  animation-duration: .6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  transition: opacity .2s;
-}
-
   ${props => props.loading && css`
     cursor: wait !important;
     // color: transparent;
 
-span {
+${LoadingOverlay} {
   opacity: 0.2;
   visibility: visible;
 }
@@ -333,6 +360,11 @@ li {
   line-height: 1.5;
 }
 `
+
+const TotalAmount = styled.span`
+  margin: 0 0 0 10px;
+`
+
 const formatError = fields => Object.keys(fields).map(field => {
 	if (typeof fields[field] === 'string') {
 	  return (
@@ -364,7 +396,7 @@ export const Errors = ({ list = null }) => {
   )
 }
 
-export const Forms = ({ children, submitText, submittingText = 'Submitting', submitFullWidth, submitting = false, ...props }) => {
+export const Forms = ({ children, total, submitText, submittingText = 'Submitting', submitFullWidth, submitting = false, ...props }) => {
   return (
   <Formik {...props}>
     {({ handleSubmit, handleReset, isValid, isSubmitting, errors }) => {
@@ -381,7 +413,10 @@ export const Forms = ({ children, submitText, submittingText = 'Submitting', sub
 	<Errors list={errors} />
 	<Submit full={submitFullWidth} disabled={!isValid || isSubmitting} loading={submitting}>
 	  {submitting ? `${submittingText}...` : submitText}
-	  <span></span>
+	  {total && 
+	    <TotalAmount>{total}</TotalAmount>
+	  }
+	  <LoadingOverlay />
 	</Submit>
       </Form>
       )

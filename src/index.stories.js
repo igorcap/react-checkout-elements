@@ -42,6 +42,13 @@ storiesOf('Checkout', module)
       initialValues={{ first_name: '', last_name: '', email: '', phone: '', card: { number: '', expiry: '', cvv: '' } }}
       onSubmit={action('submitted')} />
   ))
+  .add('with total ptice', () => (
+    <Checkout 
+      submitText="Submit"
+      total="3 999 руб."
+      initialValues={{ first_name: '', last_name: '', email: '', phone: '', card: { number: '', expiry: '', cvv: '' } }}
+      onSubmit={action('submitted')} />
+  ))
   .add('Submitting', () => (
     <Forms
       submitting

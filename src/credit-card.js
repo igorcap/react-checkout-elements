@@ -481,7 +481,7 @@ const CreditCard = ({
   threedSecureUrl, 
   threedSecure = false }) => (
   <React.Fragment>
-    <Fieldset title={title}>
+    <Fieldset title={title} card>
       <Card threedSecure={threedSecure}>
         <CardNumber />
         <CardExpiry />

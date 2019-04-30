@@ -518,15 +518,16 @@ const CheckboxLabel = styled.label`
   width: 100%;
     min-height: 20px;
     line-height: 1.2;
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
     position: relative;
     color: #8b8e94; /* #4a9c58; */
     transition: color .3s;
     display: block;
-    padding: 14px 14px 12px 48px;
+    padding: 13px 14px 12px 44px;
     border-radius: 3px;
     user-select: none;
+  font-weight: 400;
     transition: all .3s;
     /*background: rgba(253, 213, 165, 0.4);*/
     border: 1px dashed #b7b7b9; /* rgba(77, 180, 94, 0.7); */
@@ -566,7 +567,7 @@ const CheckboxLabel = styled.label`
     }
 
     &:after {
-	width: 4px;
+	width: 5px;
 	height: 9px;
 	top: 15px;
 	left: 21px;
@@ -649,10 +650,10 @@ const AgreementElement = ({ children }) => {
     )
 }
 
-export const Agreement = (props) => {
+export const Agreement = ({ children, ...props }) => {
     return (
         <AgreementElement {...props}>
-	  Я согласен на автоматические ежемесячные списания для выбранной подписки
+	  {children ? children : 'Я согласен на автоматические ежемесячные списания для выбранной подписки'}
 	      {/* <AgreementDetails>Подробнее</AgreementDetails> */}
             {/* Вы всегда сможете отменить дальнейшую оплату в настройках профиля. */}
         </AgreementElement>
@@ -760,7 +761,7 @@ const Checkout = ({
       }
 
       {agreement &&
-	<Agreement />
+	<Agreement>{agreementText}</Agreement>
       }
     </Forms>
   )

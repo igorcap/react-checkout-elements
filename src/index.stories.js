@@ -52,7 +52,7 @@ storiesOf('Checkout', module)
   .add('with agreement', () => (
     <Checkout 
       agreement
-      agreementText=""
+      agreementText="Я согласен"
       submitText="Submit"
       total="3 999 руб."
       initialValues={{ first_name: '', last_name: '', email: '', phone: '', card: { number: '', expiry: '', cvv: '' } }}

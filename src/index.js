@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
-import { Formik, connect } from 'formik'
+import { Formik, Field, connect } from 'formik'
 import styled, { css, keyframes } from 'styled-components'
-import { rgba } from 'polished'
+import { rgba, darken } from 'polished'
 import CreditCard, { ThreedSecure, validator as validate } from './credit-card'
 import Customer from './customer'
 import { Visa, MasterCard, Mir } from './card-icons'
@@ -513,9 +513,156 @@ const formatCard = ({ expiry, number, cvv }) => {
     cvv
   }
 }
+
+const CheckboxLabel = styled.label`
+  width: 100%;
+    min-height: 20px;
+    line-height: 1.2;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    color: #8b8e94; /* #4a9c58; */
+    transition: color .3s;
+    display: block;
+    padding: 14px 14px 12px 48px;
+    border-radius: 3px;
+    user-select: none;
+    transition: all .3s;
+    /*background: rgba(253, 213, 165, 0.4);*/
+    border: 1px dashed #b7b7b9; /* rgba(77, 180, 94, 0.7); */
+
+    &:hover {
+        /*color: ${darken(0.1, '#7d8086')};*/
+        border-color: ${darken(0.1, '#b7b7b9')};
+    }
+
+    ${props => props.error && css`
+        border-color: rgba(216,67,72,0.9) !important;
+        color: rgba(216,67,72, 1);
+
+        &:before {
+            border-color: rgba(216,67,72,0.9) !important;
+        }
+    `}
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    &:before {
+        top: 12px;
+        left: 14px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #b7b7b9;
+        border-radius: 3px;
+        box-shadow: none;
+        z-index: 1;
+        transition: background-color .2s, border-color .2s, box-shadow .2s;
+        background: #fff;
+    }
+
+    &:after {
+	width: 4px;
+	height: 9px;
+	top: 15px;
+	left: 21px;
+        border: 2px solid #4db45e;
+        transform: rotate(35deg);
+        border-left: 0;
+        border-top: 0;
+        opacity: 0;
+        z-index: 2;
+        transition: transform .2s, opacity .2s;
+    }
+`
+
+const AgreementHolder = styled.div`
+    margin: 0 0 15px;
+`
+
+const CheckboxInput = styled.input.attrs(() => ({
+  type: 'checkbox'
+}))`
+    /*position: absolute;
+    left: -10000px;
+    top: 0;*/
+    width: 1px;
+    height: 1px;
+    display: none;
+    visibility: hidden;
+
+    &:checked+label {
+        color: #4a9c58;
+        border-color: rgba(77, 180, 94, 0.7);
+
+        &:before {
+            box-shadow: none;
+            border-color: rgba(77, 180, 94, 0.7);
+        }
+
+        &:after {
+            opacity: 1;
+        }
+    }
+`
+
+const AgreementDetails = styled.span`
+    display: inline-block;
+    color: #4598e8;
+    // border-bottom: 1px dotted #4598e8;
+    transition: all .3s;
+`
+
+const validateAgreement = (value = false) => {
+  let errorMessage
+
+  if (!value) {
+    errorMessage = 'Согласитесь с условиями платежей'
+  }
+
+  return errorMessage
+}
+const AgreementElement = ({ children }) => {
+    return (
+        <Fieldset>
+	  <Field name="agreed" validate={validateAgreement}>
+	    {({ field, form }) => (
+	      <Fragment>
+		<CheckboxInput {...field } checked={!!field.value} />
+		<CheckboxLabel
+		  error={false}
+		  onClick={event => {
+		    event.preventDefault()
+		    form.setFieldValue('agreed', !field.value)
+		  }}
+		  htmlFor="agreed">
+		  {children}
+		</CheckboxLabel>
+	      </Fragment>
+	    )}
+	  </Field>
+        </Fieldset>
+    )
+}
+
+export const Agreement = (props) => {
+    return (
+        <AgreementElement {...props}>
+	  Я согласен на автоматические ежемесячные списания для выбранной подписки
+	      {/* <AgreementDetails>Подробнее</AgreementDetails> */}
+            {/* Вы всегда сможете отменить дальнейшую оплату в настройках профиля. */}
+        </AgreementElement>
+    )
+}
  
 const Checkout = ({
   card = true,
+  agreement,
+  agreementText,
   threedSecureDomain,
   threedSecureCallbackName, 
   onThreedSecureComplete,
@@ -559,7 +706,7 @@ const Checkout = ({
     return null
   }
 
-  const values = {
+  const defaultValues = {
     first_name: '',
     last_name: '',
     email: '',
@@ -569,7 +716,15 @@ const Checkout = ({
       expiry: '',
       cvv: ''
     },
+  }
+
+  const values = {
+    ...defaultValues,
     ...initialValues
+  }
+
+  if (agreement) {
+    values.agreed = false
   }
 
   // console.log(formik)
@@ -602,6 +757,10 @@ const Checkout = ({
       }
       {children &&
 	<Fieldset>{children}</Fieldset>
+      }
+
+      {agreement &&
+	<Agreement />
       }
     </Forms>
   )

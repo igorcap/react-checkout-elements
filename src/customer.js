@@ -8,24 +8,12 @@ import { Fieldset, Row, ErrorMessage, Input, Label } from './'
 
 const validateEmail = (value = '') => {
   let errorMessage
-  if (isEmpty(value, { ignore_whitespace: true })) {
-    errorMessage = 'Укажите адрес эл. почты'
-  } else if (!isEmail(value)) {
-    errorMessage = 'Укажите валидный адрес эл. почты'
-  }
 
   return errorMessage
 }
 
 const validatePhone = (value = '') => {
   let errorMessage
-
-  if (isEmpty(value, { ignore_whitespace: true })) {
-    errorMessage = 'Укажите телефон'
-  } else if (!isMobilePhone(value)) {
-    errorMessage = 'Укажите правильный телефон'
-  }
-
   return errorMessage
 }
 
@@ -35,7 +23,7 @@ const validateName = (firstName = true) => (value = '') => {
   const maxLength = 32
 
   if (isEmpty(value, { ignore_whitespace: true })) {
-   errorMessage = `Укажите ${nameType}`;
+   errorMessage = `${nameType}`;
   } else if (value.length > maxLength) {
     errorMessage = `${nameType.charAt(0).toUpperCase() + nameType.slice(1)} не должно привышать ${maxLength} символа`
   }
@@ -80,22 +68,22 @@ const FormInput = ({ inline, label, placeholder, ...props }) => (
 
 
 export const FirstName = props => (
-  <FormInput label="Имя" placeholder="Иван" name="first_name" validate={validateFirstName} {...props} />
+  <FormInput label="Nome" placeholder="Nome" name="first_name" validate={validateFirstName} {...props} />
 )
 
 export const LastName = props => (
-  <FormInput label="Фамилия" placeholder="Петров" name="last_name" validate={validateLastName} {...props} />
+  <FormInput label="Sobrenome" placeholder="Sobrenome" name="last_name" validate={validateLastName} {...props} />
 )
 
 export const Email = (props) => (
-  <FormInput label="Эл. почта" placeholder="email@example.com" name="email" validate={validateEmail} {...props} />
+  <FormInput label="Email" placeholder="email@example.com" name="email" validate={validateEmail} {...props} />
 )
 
 export const Phone = (props) => (
-  <FormInput label="Телефон" placeholder="+79823332211" name="phone" validate={validatePhone} {...props} />
+  <FormInput label="Telefone" placeholder="+79823332211" name="phone" validate={validatePhone} {...props} />
 )
 
-const Customer = ({ title = 'Контактная информация' }) => (
+const Customer = ({ title = 'Informações do Cliente' }) => (
   <Fieldset title={title}>
     <FirstName inline />
     <LastName inline />

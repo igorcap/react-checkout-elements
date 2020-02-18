@@ -149,18 +149,11 @@ const CardInput = ({
 
 const validateNumber = (value = '') => {
   let errorMessage
-  const cardNumber = validate.number(value.replace(/\s+/g, ''))
-
-  if (!value) {
-    errorMessage = 'Укажите номер карты'
-  } else if (!(cardNumber && cardNumber.isValid)) {
-     errorMessage= 'Укажите правильный номер карты'
-  }
   return errorMessage
 }
 const CardNumber = ({ placeholder = '4242 4242 4242 4242' }) => (
   <CardInput
-    label="Номер карты"
+    label="Número"
     placeholder={placeholder}
     name="number"
     validate={validateNumber}
@@ -169,21 +162,13 @@ const CardNumber = ({ placeholder = '4242 4242 4242 4242' }) => (
 
 const validateExpiry = (value = '') => {
   let errorMessage
-  const expiry = validate.expirationDate(value)
-
-  if (!value) {
-    errorMessage = 'Укажите срок дейсвия карты'
-  } else if (!expiry.isValid) {
-    errorMessage= 'Укажите правильный срок действия карты'
-  }
-
   return errorMessage 
 }
 
 const autoCorrectedDatePipe = createAutoCorrectedDatePipe('mm / yy', { minYear: 2019 })
 const CardExpiry = ({ placeholder = '04 / 22' }) => (
   <CardInput
-    label="Срок действия"
+    label="Data de expiração"
     placeholder={placeholder}
     name="expiry"
     keepCharPositions={true} 
@@ -198,19 +183,11 @@ const CardHolder = () => (
 
 const validateCVV = (value = '') => {
   let errorMessage
-  const cvv = validate.cvv(value)
-
-  if (!value) {
-    errorMessage = 'Укажите CVV код'
-  } else if (!cvv.isValid) {
-    errorMessage = 'Укажите правильный cvv код'
-  }
-
   return errorMessage 
 }
 const CardCVV = ({ placeholder = '123' }) => (
   <CardInput
-    label="CVV код"
+    label="CVV"
     placeholder={placeholder}
     type="password" 
     name="cvv" 
